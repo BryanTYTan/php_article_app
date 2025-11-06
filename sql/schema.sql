@@ -1,46 +1,41 @@
-DROP TABLE IF EXISTS Product;
-DROP TABLE IF EXISTS Article;
-DROP TABLE IF EXISTS Comment;
-DROP TABLE IF EXISTS User_Article;
-DROP TABLE IF EXISTS Article_Comment;
+CREATE SCHEMA article_app;
+SET search_path TO article_app;
 
-CREATE TABLE User (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    username TEXT NOT NULL,
-    user_password TEXT NOT NULL,
-    user_email TEXT NOT NULL,
-    is_administrator BOOLEAN NOT NULL DEFAULT FALSE,
-);
+-- User Table
+CREATE TABLE users {
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    is_administrator BOOLEAN DEFAULT FALSE,
+};
 
-CREATE TABLE Article (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL,
+-- Article Table
+CREATE TABLE articles {
+    article_id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT NOW(),
+    title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
-    FOREIGN KEY (created_by) REFERENCES User (id)
-);
+    creator_id INT NOT NULL REFERENCES users(user_id),
+};
 
-CREATE TABLE Comment (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- Comment Table
+CREATE TABLE comments {
+    comment_id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT NOW(),
     content TEXT NOT NULL,
-    FOREIGN KEY (created_by) REFERENCES User (id)
-);
+    creator_id INT NOT NULL REFERENCES users(user_id),
+}
 
-CREATE TABLE User_Article (
-    user_id INTEGER NOT NULL,
-    article_id INTEGER NOT NULL,
-    PRIMARY KEY (user_id, article_id),
-    FOREIGN KEY (user_id) REFERENCES User (id),
-    FOREIGN KEY (article_id) REFERENCES Article (id)
-);
+-- Junction Table #1
+-- Stores all the comments linked to a particular article
+CREATE TABLE article_comments {
+    article_id INT NOT NULL REFERENCES articles(article_id),
+    comment_id INT NOT NULL REFERENCES comments(comment_id),
+    PRIMARY KEY (article_id, comment_id)
+};
 
-CREATE TABLE Article_Comment (
-    user_id INTEGER NOT NULL,
-    comment_id INTEGER NOT NULL,
-    PRIMARY KEY (user_id, comment_id),
-    FOREIGN KEY (user_id) REFERENCES User (id),
-    FOREIGN KEY (comment_id) REFERENCES Comment (id)
-);
 
+-- Indexes to speed up lookups / filters
+CREATE INDEX idx_article_title on articles(title);
