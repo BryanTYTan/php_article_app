@@ -26,15 +26,8 @@ CREATE TABLE comments {
     created_at TIMESTAMP DEFAULT NOW(),
     content TEXT NOT NULL,
     creator_id INT NOT NULL REFERENCES users(user_id),
-}
-
--- Junction Table #1
--- Stores all the comments linked to a particular article
-CREATE TABLE article_comments {
     article_id INT NOT NULL REFERENCES articles(article_id),
-    comment_id INT NOT NULL REFERENCES comments(comment_id),
-    PRIMARY KEY (article_id, comment_id)
-};
+}
 
 
 -- Indexes to speed up lookups / filters
