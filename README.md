@@ -10,7 +10,7 @@ Within psql command-line tool
 `createdb app_database`
 
 2. Load schema: </br>
-`psql -U username -d app_database -f schema.sql`
+`psql -U your_username -d app_database -f schema.sql`
 
 3. Load default data: </br>
-`psql -U username -d app_database -f default_data.sql`
+`psql -U your_username -d app_database -f default_data.sql`
