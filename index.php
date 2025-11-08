@@ -1,17 +1,5 @@
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Fan Made Stories.co</title>
-</head>
-
-<body>
-    <?php
-
-    echo "Hello World";
-
-    ?>
-</body>
-
-</html>
+<?php
+// Redirect to login page
+header("Location: /src/auth/login.php");
+exit();
+?>
