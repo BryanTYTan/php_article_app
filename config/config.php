@@ -3,7 +3,7 @@ session_start();
 
 define('DB_HOST', 'localhost');
 define('DB_PORT', '5432');
-define('DB_NAME', 'app_database');
+define('DB_NAME', 'your_database');
 define('DB_USER', 'your_username');
 define('DB_PASS', 'your_password');
 
@@ -15,6 +15,10 @@ function getDBConnection()
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]);
+        
+        // Set search path to article_app schema
+        $pdo->exec("SET search_path TO article_app");
+        
         return $pdo;
     } catch (PDOException $e) {
         die("Database connection failed: " . $e->getMessage());
@@ -24,6 +28,11 @@ function getDBConnection()
 function isLoggedIn()
 {
     return isset($_SESSION['user_id']);
+}
+
+function isAdmin()
+{
+    return isset($_SESSION['is_administrator']) && $_SESSION['is_administrator'] === true;
 }
 
 function redirect($page)
