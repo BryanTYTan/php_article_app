@@ -3,8 +3,8 @@
 define('DB_HOST', 'localhost');
 define('DB_PORT', '5432');
 define('DB_NAME', 'app_database');
-define('DB_USER', 'postgres');
-define('DB_PASS', 'abc');
+define('DB_USER', 'your_username');
+define('DB_PASS', 'your_password');
 
 $admin_username = 'admin';
 $admin_email = 'admin@example.com';
