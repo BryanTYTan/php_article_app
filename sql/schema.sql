@@ -1,5 +1,5 @@
 CREATE SCHEMA article_app;
-SET search_path TO article_app;
+SET search_path TO article_app, public;
 
 -- User Table
 CREATE TABLE users (

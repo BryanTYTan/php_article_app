@@ -3,9 +3,9 @@ session_start();
 
 define('DB_HOST', 'localhost');
 define('DB_PORT', '5432');
-define('DB_NAME', 'your_database');
-define('DB_USER', 'your_username');
-define('DB_PASS', 'your_password');
+define('DB_NAME', 'app_database');
+define('DB_USER', 'postgres');
+define('DB_PASS', 'abc');
 
 function getDBConnection()
 {
@@ -15,10 +15,10 @@ function getDBConnection()
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]);
-        
-        // Set search path to article_app schema
-        $pdo->exec("SET search_path TO article_app");
-        
+
+        // Set the search path to article_app schema
+        $pdo->exec("SET search_path TO article_app, public");
+
         return $pdo;
     } catch (PDOException $e) {
         die("Database connection failed: " . $e->getMessage());
